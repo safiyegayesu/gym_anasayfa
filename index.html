@@ -1,53 +1,484 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitness Club</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IRONPEAK GYM — Hareketler & Kas Rehberi</title>
+  <meta name="description" content="Gym hareketleri ve çalışan kas grupları rehberi. Bench press, squat, deadlift ve daha fazlası.">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-    <!-- Navbar -->
-    <header>
-        <h1>FITNESS CLUB</h1>
-        <nav>
-            <a href="#">Anasayfa</a>
-            <a href="#">Hakkımızda</a>
-            <a href="#">Programlar</a>
-            <a href="#">İletişim</a>
-        </nav>
-    </header>
+  <!-- Scroll Progress -->
+  <div class="scroll-progress" id="scrollProgress"></div>
 
-    <!-- Hero -->
-    <section class="hero">
-        <h2>Gücünü Keşfet 💪</h2>
-        <p>Sağlıklı yaşam için ilk adımı bugün at</p>
-        <button onclick="joinNow()">Hemen Katıl</button>
-    </section>
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar">
+    <a href="index.html" class="nav-logo">IRON<span>PEAK</span></a>
 
-    <!-- Services -->
-    <section class="services">
-        <div class="card">
-            <h3>Fitness</h3>
-            <p>Profesyonel ekipmanlarla çalış</p>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Anasayfa</a></li>
+      <li><a href="#hareketler">Hareketler</a></li>
+      <li><a href="#program">Program</a></li>
+      <li><a href="pages/about.html">Hakkımızda</a></li>
+      <li><a href="pages/contact.html">İletişim</a></li>
+    </ul>
+
+    <button class="hamburger" id="hamburger" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="index.html">Anasayfa</a></li>
+      <li><a href="#hareketler">Hareketler</a></li>
+      <li><a href="#program">Program</a></li>
+      <li><a href="pages/about.html">Hakkımızda</a></li>
+      <li><a href="pages/contact.html">İletişim</a></li>
+    </ul>
+  </div>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <p class="hero-tag fade-up">Kas Rehberi</p>
+      <h1 class="fade-up delay-1">
+        <span class="line-red">KASINI</span><br>
+        <span>TANI,</span><br>
+        <span class="line-outline">GÜÇLENDİR</span>
+      </h1>
+      <p class="hero-sub fade-up delay-2">
+        Her gym hareketini, çalıştırdığı kasları ve doğru tekniği öğren.
+        Bilimsel yaklaşımla antrenman yap, maksimum sonuç al.
+      </p>
+      <div class="fade-up delay-3" style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="#hareketler" class="btn-primary">Hareketleri Keşfet →</a>
+        <a href="#program" class="btn-outline">Program Gör</a>
+      </div>
+
+      <div class="hero-stats fade-up delay-4">
+        <div class="stat-item">
+          <div class="stat-num">12<span>+</span></div>
+          <div class="stat-label">Hareket</div>
         </div>
-        <div class="card">
-            <h3>Yoga</h3>
-            <p>Zihnini ve bedenini dinlendir</p>
+        <div class="stat-item">
+          <div class="stat-num">7</div>
+          <div class="stat-label">Kas Grubu</div>
         </div>
-        <div class="card">
-            <h3>Cardio</h3>
-            <p>Yağ yakımını hızlandır</p>
+        <div class="stat-item">
+          <div class="stat-num">3<span>x</span></div>
+          <div class="stat-label">Haftalık Split</div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>© 2026 Fitness Club</p>
-    </footer>
+  <!-- ── EXERCISES ── -->
+  <section class="muscle-section" id="hareketler">
+    <div class="muscle-header">
+      <div>
+        <p class="section-label">Rehber</p>
+        <h2 class="section-title">GYM <em>HAREKETLERİ</em></h2>
+        <p class="section-desc">Kartlara tıkla — detaylı anlatım, doğru teknik ve çalışan kasları gör.</p>
+      </div>
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all">Tümü</button>
+        <button class="filter-btn" data-filter="göğüs">Göğüs</button>
+        <button class="filter-btn" data-filter="sırt">Sırt</button>
+        <button class="filter-btn" data-filter="omuz">Omuz</button>
+        <button class="filter-btn" data-filter="bacak">Bacak</button>
+        <button class="filter-btn" data-filter="biceps">Biceps</button>
+        <button class="filter-btn" data-filter="triceps">Triceps</button>
+        <button class="filter-btn" data-filter="core">Core</button>
+      </div>
+    </div>
 
-    <script src="script.js"></script>
+    <div class="body-diagram-section">
+      <div class="exercises-grid" id="exercisesGrid">
+
+        <!-- GÖĞÜS -->
+        <div class="exercise-card" data-muscle="göğüs" data-key="bench-press">
+          <div class="card-muscle">Göğüs</div>
+          <div class="card-name">Bench Press</div>
+          <div class="card-desc">Üst vücut kuvvetinin temel taşı. Pec majör, anterior deltoid ve tricepsleri çalıştırır.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Pectoralis Major</span>
+            <span class="muscle-tag">Anterior Deltoid</span>
+            <span class="muscle-tag">Triceps</span>
+          </div>
+        </div>
+
+        <!-- SQUAT -->
+        <div class="exercise-card" data-muscle="bacak" data-key="squat">
+          <div class="card-muscle">Bacak</div>
+          <div class="card-name">Squat</div>
+          <div class="card-desc">Alt vücudun "kral hareketi". Quad, hamstring ve glute kaslarını tam aktive eder.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Quadriceps</span>
+            <span class="muscle-tag primary">Gluteus Maximus</span>
+            <span class="muscle-tag">Hamstrings</span>
+          </div>
+        </div>
+
+        <!-- DEADLIFT -->
+        <div class="exercise-card" data-muscle="sırt" data-key="deadlift">
+          <div class="card-muscle">Sırt</div>
+          <div class="card-name">Deadlift</div>
+          <div class="card-desc">Tüm posterior zinciri çalıştıran, en fonksiyonel tam vücut hareketi.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Erector Spinae</span>
+            <span class="muscle-tag primary">Hamstrings</span>
+            <span class="muscle-tag">Glutes</span>
+            <span class="muscle-tag">Trapezius</span>
+          </div>
+        </div>
+
+        <!-- PULL-UP -->
+        <div class="exercise-card" data-muscle="sırt" data-key="pull-up">
+          <div class="card-muscle">Sırt</div>
+          <div class="card-name">Pull-Up</div>
+          <div class="card-desc">V şekilli sırt için vazgeçilmez. Latissimus dorsi ve bicepsi güçlü çalıştırır.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Latissimus Dorsi</span>
+            <span class="muscle-tag">Biceps Brachii</span>
+            <span class="muscle-tag">Rear Deltoid</span>
+          </div>
+        </div>
+
+        <!-- OVERHEAD PRESS -->
+        <div class="exercise-card" data-muscle="omuz" data-key="overhead-press">
+          <div class="card-muscle">Omuz</div>
+          <div class="card-name">Overhead Press</div>
+          <div class="card-desc">Geniş ve güçlü omuzlar için en temel bileşik hareket. Tüm deltoid başlarını etkiler.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Anterior Deltoid</span>
+            <span class="muscle-tag primary">Medial Deltoid</span>
+            <span class="muscle-tag">Triceps</span>
+          </div>
+        </div>
+
+        <!-- BARBELL CURL -->
+        <div class="exercise-card" data-muscle="biceps" data-key="barbell-curl">
+          <div class="card-muscle">Biceps</div>
+          <div class="card-name">Barbell Curl</div>
+          <div class="card-desc">Biceps kütlesi ve peak gelişimi için klasik ve kanıtlanmış hareket.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Biceps Brachii</span>
+            <span class="muscle-tag">Brachialis</span>
+            <span class="muscle-tag">Brachioradialis</span>
+          </div>
+        </div>
+
+        <!-- TRICEP DIP -->
+        <div class="exercise-card" data-muscle="triceps" data-key="tricep-dip">
+          <div class="card-muscle">Triceps</div>
+          <div class="card-name">Tricep Dip</div>
+          <div class="card-desc">Kolun arka kısmını şekillendiren ve güçlendiren en etkili bileşik hareket.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Triceps Brachii</span>
+            <span class="muscle-tag">Anterior Deltoid</span>
+            <span class="muscle-tag">Pectoralis Major</span>
+          </div>
+        </div>
+
+        <!-- LEG PRESS -->
+        <div class="exercise-card" data-muscle="bacak" data-key="leg-press">
+          <div class="card-muscle">Bacak</div>
+          <div class="card-name">Leg Press</div>
+          <div class="card-desc">Squata tamamlayıcı, quad ve glute odaklı makine hareketi. Omurgayı korur.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Quadriceps</span>
+            <span class="muscle-tag">Gluteus Maximus</span>
+            <span class="muscle-tag">Hamstrings</span>
+          </div>
+        </div>
+
+        <!-- LAT PULLDOWN -->
+        <div class="exercise-card" data-muscle="sırt" data-key="lat-pulldown">
+          <div class="card-muscle">Sırt</div>
+          <div class="card-name">Lat Pulldown</div>
+          <div class="card-desc">Pull-up alternatifi olarak veya yüksek hacim için kullanılan kablo hareketi.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Latissimus Dorsi</span>
+            <span class="muscle-tag">Biceps</span>
+            <span class="muscle-tag">Rear Deltoid</span>
+          </div>
+        </div>
+
+        <!-- PLANK -->
+        <div class="exercise-card" data-muscle="core" data-key="plank">
+          <div class="card-muscle">Core</div>
+          <div class="card-name">Plank</div>
+          <div class="card-desc">Core stabilitesinin temeli. Tüm karın ve merkez kaslarını izometrik olarak çalıştırır.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Transverse Abdominis</span>
+            <span class="muscle-tag">Rectus Abdominis</span>
+            <span class="muscle-tag">Obliques</span>
+          </div>
+        </div>
+
+        <!-- CALF RAISE -->
+        <div class="exercise-card" data-muscle="bacak" data-key="calf-raise">
+          <div class="card-muscle">Bacak</div>
+          <div class="card-name">Calf Raise</div>
+          <div class="card-desc">Genellikle ihmal edilen baldır kaslarını direkt olarak çalıştıran izole hareket.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Gastrocnemius</span>
+            <span class="muscle-tag primary">Soleus</span>
+          </div>
+        </div>
+
+        <!-- FACE PULL -->
+        <div class="exercise-card" data-muscle="omuz" data-key="face-pull">
+          <div class="card-muscle">Omuz</div>
+          <div class="card-name">Face Pull</div>
+          <div class="card-desc">Posterior deltoid ve rotator cuff sağlığı için kritik düzeltici hareket.</div>
+          <div class="card-muscles-list">
+            <span class="muscle-tag primary">Posterior Deltoid</span>
+            <span class="muscle-tag primary">Rotator Cuff</span>
+            <span class="muscle-tag">Rhomboids</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Body Diagram Panel -->
+      <div class="body-panel">
+        <p class="body-panel-title">Vücut Haritası</p>
+        <div class="body-svg-container">
+          <svg viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg">
+            <!-- Head -->
+            <ellipse cx="100" cy="30" rx="22" ry="26" fill="#2a2a2a" stroke="#444" stroke-width="1"/>
+            <!-- Neck -->
+            <rect x="90" y="52" width="20" height="14" rx="4" fill="#2a2a2a" stroke="#444" stroke-width="1"/>
+            <!-- Shoulders -->
+            <ellipse cx="60" cy="78" rx="22" ry="16" class="body-part" data-muscle="omuz"/>
+            <ellipse cx="140" cy="78" rx="22" ry="16" class="body-part" data-muscle="omuz"/>
+            <!-- Chest -->
+            <path d="M65 68 Q100 60 135 68 L138 110 Q100 122 62 110 Z" class="body-part" data-muscle="göğüs"/>
+            <!-- Upper Arms -->
+            <rect x="36" y="86" width="20" height="54" rx="9" class="body-part" data-muscle="biceps"/>
+            <rect x="144" y="86" width="20" height="54" rx="9" class="body-part" data-muscle="biceps"/>
+            <!-- Forearms -->
+            <rect x="34" y="146" width="18" height="52" rx="8" fill="#2a2a2a" stroke="#444" stroke-width="1"/>
+            <rect x="148" y="146" width="18" height="52" rx="8" fill="#2a2a2a" stroke="#444" stroke-width="1"/>
+            <!-- Back / upper back (shown as separate color for triceps on arm back side) -->
+            <!-- Core / Abs -->
+            <path d="M68 112 Q100 124 132 112 L128 170 Q100 182 72 170 Z" class="body-part" data-muscle="core"/>
+            <!-- Back indicator (just label area) -->
+            <path d="M68 172 Q100 165 132 172 L130 220 Q100 228 70 220 Z" class="body-part" data-muscle="sırt"/>
+            <!-- Upper back label -->
+            <text x="100" y="200" text-anchor="middle" fill="#666" font-size="8" font-family="sans-serif">SIRT</text>
+            <!-- Triceps label on arm -->
+            <rect x="36" y="142" width="18" height="4" rx="2" class="body-part" data-muscle="triceps"/>
+            <rect x="146" y="142" width="18" height="4" rx="2" class="body-part" data-muscle="triceps"/>
+            <!-- Hips -->
+            <path d="M70 222 Q100 230 130 222 L136 266 Q100 272 64 266 Z" fill="#252525" stroke="#3a3a3a" stroke-width="1"/>
+            <!-- Quads -->
+            <rect x="64" y="268" width="32" height="72" rx="14" class="body-part" data-muscle="bacak"/>
+            <rect x="104" y="268" width="32" height="72" rx="14" class="body-part" data-muscle="bacak"/>
+            <!-- Knees -->
+            <ellipse cx="80" cy="348" rx="16" ry="10" fill="#1e1e1e" stroke="#333" stroke-width="1"/>
+            <ellipse cx="120" cy="348" rx="16" ry="10" fill="#1e1e1e" stroke="#333" stroke-width="1"/>
+            <!-- Calves -->
+            <rect x="66" y="356" width="28" height="56" rx="12" class="body-part" data-muscle="bacak"/>
+            <rect x="106" y="356" width="28" height="56" rx="12" class="body-part" data-muscle="bacak"/>
+            <!-- Feet -->
+            <ellipse cx="80" cy="415" rx="16" ry="6" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+            <ellipse cx="120" cy="415" rx="16" ry="6" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+          </svg>
+          <div class="body-legend">
+            <div class="legend-item"><div class="legend-dot active"></div> Seçili</div>
+            <div class="legend-item"><div class="legend-dot inactive"></div> Diğer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TIPS ── -->
+  <section class="tips-section">
+    <p class="section-label">Bilgi</p>
+    <h2 class="section-title">ANTRENMAN <em>İPUÇLARI</em></h2>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-num">01</div>
+        <div class="tip-icon">🎯</div>
+        <div class="tip-title">Progresif Aşırı Yüklenme</div>
+        <div class="tip-text">Her antrenman seansında ağırlık, set veya tekrar artırarak kaslarına büyüme sinyali ver. Adaptasyon durmazsa ilerleme olmaz.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">02</div>
+        <div class="tip-icon">🔬</div>
+        <div class="tip-title">Zihin-Kas Bağlantısı</div>
+        <div class="tip-text">Her tekrarda hedef kasını hissetmeye odaklan. Araştırmalar, kası düşünerek yapılan egzersizin aktivasyonu %20-30 artırdığını gösteriyor.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">03</div>
+        <div class="tip-icon">😴</div>
+        <div class="tip-title">Dinlenme = Büyüme</div>
+        <div class="tip-text">Kaslar antrenmanda değil, dinlenirken büyür. Her gece 7-9 saat uyku, hormonal denge ve kas protein sentezi için zorunludur.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">04</div>
+        <div class="tip-icon">🥩</div>
+        <div class="tip-title">Protein Alımı</div>
+        <div class="tip-text">Kas büyümesi için vücut ağırlığının kilogramı başına günlük 1.6–2.2g protein hedefle. Öğünlere eşit dağıt, leucine içeriği yüksek kaynakları tercih et.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">05</div>
+        <div class="tip-icon">📐</div>
+        <div class="tip-title">Hareket Kalitesi</div>
+        <div class="tip-text">Ağır ama yanlış teknik yerine hafif ama mükemmel teknik seç. Tam hareket açıklığı (ROM), kas gelişimini ciddi oranda artırır.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">06</div>
+        <div class="tip-icon">💧</div>
+        <div class="tip-title">Hidrasyon</div>
+        <div class="tip-text">Kasların %70'i sudur. Antrenman öncesi, sırası ve sonrasında yeterli su iç. Hafif dehidrasyon bile performansı %5-10 düşürür.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROGRAM SPLIT ── -->
+  <section class="split-section" id="program">
+    <div class="split-header">
+      <p class="section-label">Haftalık Plan</p>
+      <h2 class="section-title">PPL <em>SPLIT</em> PROGRAMI</h2>
+      <p class="section-desc" style="margin:0 auto;text-align:center;">Push-Pull-Legs — bilimsel olarak kanıtlanmış, yoğunluk-dinlenme dengesi ideal split.</p>
+    </div>
+
+    <div class="split-grid">
+      <div class="split-card">
+        <div class="split-day">Pazartesi</div>
+        <div class="split-name">PUSH</div>
+        <div class="split-muscles">
+          <span class="split-tag">Göğüs</span>
+          <span class="split-tag">Ön Omuz</span>
+          <span class="split-tag">Triceps</span>
+        </div>
+      </div>
+      <div class="split-card">
+        <div class="split-day">Salı</div>
+        <div class="split-name">PULL</div>
+        <div class="split-muscles">
+          <span class="split-tag">Sırt</span>
+          <span class="split-tag">Arka Omuz</span>
+          <span class="split-tag">Biceps</span>
+        </div>
+      </div>
+      <div class="split-card">
+        <div class="split-day">Çarşamba</div>
+        <div class="split-name">LEGS</div>
+        <div class="split-muscles">
+          <span class="split-tag">Quad</span>
+          <span class="split-tag">Hamstring</span>
+          <span class="split-tag">Glute</span>
+          <span class="split-tag">Baldır</span>
+        </div>
+      </div>
+      <div class="split-card">
+        <div class="split-day">Perşembe</div>
+        <div class="split-name">REST</div>
+        <div class="split-muscles">
+          <span class="split-tag">Aktif Dinlenme</span>
+          <span class="split-tag">Esneme</span>
+        </div>
+      </div>
+      <div class="split-card">
+        <div class="split-day">Cuma</div>
+        <div class="split-name">PUSH</div>
+        <div class="split-muscles">
+          <span class="split-tag">Göğüs</span>
+          <span class="split-tag">Ön Omuz</span>
+          <span class="split-tag">Triceps</span>
+        </div>
+      </div>
+      <div class="split-card">
+        <div class="split-day">Cumartesi</div>
+        <div class="split-name">PULL</div>
+        <div class="split-muscles">
+          <span class="split-tag">Sırt</span>
+          <span class="split-tag">Arka Omuz</span>
+          <span class="split-tag">Biceps</span>
+        </div>
+      </div>
+      <div class="split-card">
+        <div class="split-day">Pazar</div>
+        <div class="split-name">LEGS</div>
+        <div class="split-muscles">
+          <span class="split-tag">Quad</span>
+          <span class="split-tag">Hamstring</span>
+          <span class="split-tag">Glute</span>
+          <span class="split-tag">Baldır</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section class="cta-section">
+    <p class="section-label">Başla</p>
+    <h2 class="cta-title">GÜÇLÜ <em>OL</em><br>DAYANIKLI <em>KAL</em></h2>
+    <p class="section-desc" style="margin:0 auto 3rem;text-align:center;">Tüm hareketleri öğren, programını oluştur ve hedeflerine ulaş.</p>
+    <div class="cta-btns">
+      <a href="#hareketler" class="btn-primary">Tüm Hareketler</a>
+      <a href="pages/contact.html" class="btn-outline">Bizimle İletişime Geç</a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">IRON<span>PEAK</span></div>
+        <p class="footer-about">Bilimsel antrenman prensipleriyle güçlen. Doğru teknik, doğru beslenme, doğru dinlenme — üçü bir arada başarı getirir.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Hızlı Erişim</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Anasayfa</a></li>
+          <li><a href="#hareketler">Hareketler</a></li>
+          <li><a href="#program">Program</a></li>
+          <li><a href="pages/about.html">Hakkımızda</a></li>
+          <li><a href="pages/contact.html">İletişim</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Kas Grupları</div>
+        <ul class="footer-links">
+          <li><a href="#">Göğüs</a></li>
+          <li><a href="#">Sırt</a></li>
+          <li><a href="#">Omuz</a></li>
+          <li><a href="#">Bacak</a></li>
+          <li><a href="#">Kollar</a></li>
+          <li><a href="#">Core</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 <span>IRONPEAK</span> GYM — Tüm Hakları Saklıdır.</p>
+      <p class="footer-copy" style="color:#444;">Tasarım & Geliştirme: IRONPEAK</p>
+    </div>
+  </footer>
+
+  <!-- ── MODAL ── -->
+  <div class="modal-overlay" id="exerciseModal">
+    <div class="modal">
+      <button class="modal-close" aria-label="Kapat">✕</button>
+      <div class="modal-muscle"></div>
+      <div class="modal-title"></div>
+      <p class="modal-desc"></p>
+      <div class="modal-section-title">Teknik Adımları</div>
+      <ol class="modal-steps"></ol>
+      <div class="modal-section-title">Çalışan Kaslar</div>
+      <div class="modal-tags"></div>
+    </div>
+  </div>
+
+  <script src="assets/js/java.js"></script>
 </body>
 </html>

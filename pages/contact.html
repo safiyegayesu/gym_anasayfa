@@ -1,1 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>İletişim — IRONPEAK GYM</title>
+  <meta name="description" content="IRONPEAK Gym ile iletişime geçin. Sorularınız için bize ulaşın.">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
 
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar">
+    <a href="../index.html" class="nav-logo">IRON<span>PEAK</span></a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Anasayfa</a></li>
+      <li><a href="../index.html#hareketler">Hareketler</a></li>
+      <li><a href="../index.html#program">Program</a></li>
+      <li><a href="about.html">Hakkımızda</a></li>
+      <li><a href="contact.html" class="active">İletişim</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="../index.html">Anasayfa</a></li>
+      <li><a href="../index.html#hareketler">Hareketler</a></li>
+      <li><a href="../index.html#program">Program</a></li>
+      <li><a href="about.html">Hakkımızda</a></li>
+      <li><a href="contact.html">İletişim</a></li>
+    </ul>
+  </div>
+
+  <!-- ── PAGE HERO ── -->
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div>
+      <p class="section-label fade-up">Bize Ulaşın</p>
+      <h1 class="fade-up delay-1"><em>İLETİŞİM</em></h1>
+    </div>
+  </div>
+
+  <!-- ── CONTACT ── -->
+  <section style="background:var(--black);">
+    <div class="contact-grid">
+
+      <!-- Info -->
+      <div>
+        <p class="section-label">Bilgiler</p>
+        <h2 class="section-title" style="margin-bottom:2.5rem;">BİZE<br><em>ULAŞIN</em></h2>
+
+        <div class="contact-info-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <h4>Adres</h4>
+            <p>Spor Caddesi No: 42<br>Merkez / İstanbul, Türkiye</p>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <h4>Telefon</h4>
+            <p>+90 212 000 00 00</p>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="contact-icon">✉️</div>
+          <div>
+            <h4>E-posta</h4>
+            <p>info@ironpeakgym.com</p>
+          </div>
+        </div>
+
+        <div class="contact-info-item">
+          <div class="contact-icon">🕐</div>
+          <div>
+            <h4>Çalışma Saatleri</h4>
+            <p>Hft içi: 06:00 – 23:00<br>Hft sonu: 08:00 – 20:00</p>
+          </div>
+        </div>
+
+        <div style="margin-top:2.5rem;padding:1.5rem;background:var(--card);border:1px solid var(--border);">
+          <p style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:0.75rem;">Sık Sorulan Soru</p>
+          <p style="color:var(--gray-light);font-size:0.95rem;line-height:1.8;">Üyelik, program ve antrenman konularında sorularınızı aşağıdaki form ile iletebilir ya da doğrudan arayabilirsiniz. En geç 24 saat içinde dönüş yapılır.</p>
+        </div>
+      </div>
+
+      <!-- Form -->
+      <div>
+        <p class="section-label">Form</p>
+        <h2 class="section-title" style="margin-bottom:2rem;">MESAJ<br><em>GÖNDER</em></h2>
+
+        <form id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">Ad</label>
+              <input type="text" id="firstName" name="firstName" placeholder="Adınız" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Soyad</label>
+              <input type="text" id="lastName" name="lastName" placeholder="Soyadınız" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">E-posta Adresi</label>
+            <input type="email" id="email" name="email" placeholder="ornek@mail.com" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Telefon (İsteğe Bağlı)</label>
+            <input type="tel" id="phone" name="phone" placeholder="+90 5XX XXX XX XX">
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Konu</label>
+            <select id="subject" name="subject" required>
+              <option value="" disabled selected>Konu seçin</option>
+              <option value="membership">Üyelik Bilgisi</option>
+              <option value="program">Antrenman Programı</option>
+              <option value="nutrition">Beslenme Danışmanlığı</option>
+              <option value="technique">Hareket Tekniği</option>
+              <option value="other">Diğer</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Mesajınız</label>
+            <textarea id="message" name="message" placeholder="Sorunuzu veya mesajınızı yazın..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn-primary" style="width:100%;justify-content:center;cursor:pointer;">
+            GÖNDER →
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">IRON<span>PEAK</span></div>
+        <p class="footer-about">Bilimsel antrenman prensipleriyle güçlen. Doğru teknik, doğru beslenme, doğru dinlenme.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Sayfalar</div>
+        <ul class="footer-links">
+          <li><a href="../index.html">Anasayfa</a></li>
+          <li><a href="../index.html#hareketler">Hareketler</a></li>
+          <li><a href="about.html">Hakkımızda</a></li>
+          <li><a href="contact.html">İletişim</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Kas Grupları</div>
+        <ul class="footer-links">
+          <li><a href="../index.html#hareketler">Göğüs</a></li>
+          <li><a href="../index.html#hareketler">Sırt</a></li>
+          <li><a href="../index.html#hareketler">Bacak</a></li>
+          <li><a href="../index.html#hareketler">Omuz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 <span>IRONPEAK</span> GYM</p>
+    </div>
+  </footer>
+
+  <script src="../assets/js/java.js"></script>
+</body>
+</html>
