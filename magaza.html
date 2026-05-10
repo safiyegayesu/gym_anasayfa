@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mağaza — IRONPEAK GYM</title>
+  <meta name="description" content="IRONPEAK Supplement Mağazası. Whey protein, kreatin, vitamin ve daha fazlası.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,600;0,700&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── CSS Variables (IRONPEAK Design System) ── */
+    :root {
+      --black:    #0a0a0a;
+      --dark:     #111111;
+      --card:     #181818;
+      --border:   #2a2a2a;
+      --red:      #e63c2f;
+      --red-dark: #b52d22;
+      --red-glow: rgba(230,60,47,0.25);
+      --white:    #f5f0eb;
+      --gray:     #888888;
+      --gray-light: #bbbbbb;
+      --accent:   #f0a500;
+      --green:    #22c55e;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+
+    /* ── SCROLL PROGRESS ── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 3px; width: 0;
+      background: var(--red);
+      z-index: 9999;
+      transition: width 0.1s linear;
+      box-shadow: 0 0 10px var(--red-glow);
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.5rem; height: 70px;
+      background: rgba(10,10,10,0.97);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .navbar.scrolled { height: 58px; border-bottom-color: var(--red); }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem; letter-spacing: 3px;
+      color: var(--white); text-decoration: none;
+    }
+    .nav-logo span { color: var(--red); }
+
+    .nav-links { display: flex; list-style: none; gap: 2.5rem; align-items: center; }
+    .nav-links a {
+      color: var(--gray-light); text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; position: relative; transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 2px; background: var(--red); transition: width 0.3s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+    /* Cart button in nav */
+    .nav-cart-btn {
+      position: relative;
+      background: none; border: 1px solid var(--border);
+      color: var(--gray-light); padding: 0.45rem 1rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .nav-cart-btn:hover { border-color: var(--red); color: var(--white); }
+    .nav-cart-count {
+      position: absolute; top: -8px; right: -8px;
+      background: var(--red); color: var(--white);
+      width: 18px; height: 18px; border-radius: 50%;
+      font-size: 0.65rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transform: scale(0); transition: all 0.3s;
+    }
+    .nav-cart-count.visible { opacity: 1; transform: scale(1); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 6px; background: none; border: none;
+    }
+    .hamburger span {
+      display: block; width: 26px; height: 2px;
+      background: var(--white); border-radius: 2px;
+      transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none; position: fixed;
+      top: 70px; left: 0; right: 0;
+      background: rgba(10,10,10,0.98); backdrop-filter: blur(20px);
+      border-bottom: 2px solid var(--red); z-index: 999;
+      padding: 1.5rem 2rem 2rem;
+      transform: translateY(-110%);
+      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+    .mobile-menu.open { transform: translateY(0); }
+    .mobile-menu ul { list-style: none; }
+    .mobile-menu li { border-bottom: 1px solid var(--border); }
+    .mobile-menu a {
+      display: block; padding: 1rem 0;
+      color: var(--gray-light); text-decoration: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem; font-weight: 600; letter-spacing: 3px;
+      text-transform: uppercase; transition: color 0.3s, padding-left 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--red); padding-left: 1rem; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      min-height: 42vh; display: flex; align-items: flex-end;
+      padding: 8rem 2.5rem 4rem;
+      position: relative; overflow: hidden;
+      background: var(--dark); border-bottom: 1px solid var(--border);
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 50% 80% at 85% 50%, rgba(230,60,47,0.13), transparent 60%),
+        repeating-linear-gradient(0deg,transparent,transparent 60px,rgba(255,255,255,0.012) 60px,rgba(255,255,255,0.012) 61px),
+        repeating-linear-gradient(90deg,transparent,transparent 60px,rgba(255,255,255,0.012) 60px,rgba(255,255,255,0.012) 61px);
+    }
+    .page-hero-content { position: relative; z-index: 1; }
+    .page-hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 9vw, 7.5rem);
+      letter-spacing: 3px; line-height: 0.9;
+    }
+    .page-hero h1 em { font-style: normal; color: var(--red); }
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 5px;
+      text-transform: uppercase; color: var(--red);
+      margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.8rem;
+    }
+    .section-label::before { content: ''; width: 30px; height: 2px; background: var(--red); }
+
+    /* ── SHOP SECTION ── */
+    .shop-section { background: var(--black); padding: 5rem 2.5rem; }
+
+    /* Toolbar */
+    .shop-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.5rem; margin-bottom: 3.5rem;
+    }
+    .shop-toolbar-left { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+
+    .filter-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .filter-btn {
+      padding: 0.45rem 1.1rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--gray); cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; transition: all 0.3s;
+    }
+    .filter-btn:hover { border-color: var(--gray); color: var(--white); }
+    .filter-btn.active { background: var(--red); border-color: var(--red); color: var(--white); }
+
+    .shop-toolbar-right { display: flex; align-items: center; gap: 1rem; }
+
+    .search-box {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--card); border: 1px solid var(--border);
+      padding: 0.5rem 1rem; transition: border-color 0.3s;
+    }
+    .search-box:focus-within { border-color: var(--red); }
+    .search-box input {
+      background: none; border: none; color: var(--white);
+      font-family: 'Barlow', sans-serif; font-size: 0.9rem; outline: none; width: 160px;
+    }
+    .search-box input::placeholder { color: var(--gray); }
+    .search-box svg { color: var(--gray); flex-shrink: 0; }
+
+    .sort-select {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--gray-light); padding: 0.5rem 1rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 1px;
+      cursor: pointer; outline: none; appearance: none;
+      transition: border-color 0.3s;
+    }
+    .sort-select:focus { border-color: var(--red); }
+
+    /* Results info */
+    .results-info {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gray);
+      margin-bottom: 2rem;
+    }
+    .results-info span { color: var(--white); }
+
+    /* ── PRODUCT GRID ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* Product Card */
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+    }
+    .product-card:hover {
+      border-color: var(--red);
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.4), 0 0 0 1px var(--red-glow);
+    }
+    .product-card.hidden { display: none; }
+
+    /* Badge */
+    .card-badge {
+      position: absolute; top: 0; right: 0;
+      background: var(--red);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--white);
+      padding: 0.3rem 0.7rem;
+    }
+    .card-badge.premium { background: var(--accent); color: var(--black); }
+    .card-badge.new { background: var(--green); }
+    .card-badge.stock { background: #555; }
+
+    /* Fav button */
+    .fav-btn {
+      position: absolute; top: 0.75rem; left: 0.75rem;
+      background: rgba(10,10,10,0.8); border: 1px solid var(--border);
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.3s; font-size: 1rem;
+      color: var(--gray); z-index: 2;
+    }
+    .fav-btn:hover { border-color: #e63c2f55; color: var(--red); }
+    .fav-btn.active { border-color: var(--red); color: var(--red); background: rgba(230,60,47,0.15); }
+
+    /* Card icon area */
+    .card-icon-area {
+      height: 120px; display: flex; align-items: center; justify-content: center;
+      background: var(--dark); font-size: 4rem;
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .card-icon-area::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(230,60,47,0.08), transparent);
+    }
+
+    /* Card body */
+    .card-body { padding: 1.25rem; }
+
+    .card-category {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red);
+      margin-bottom: 0.4rem;
+    }
+
+    .card-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 2px;
+      color: var(--white); line-height: 1; margin-bottom: 0.6rem;
+    }
+
+    .card-desc {
+      font-size: 0.82rem; color: var(--gray); line-height: 1.6;
+      margin-bottom: 1rem;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+
+    /* Tags */
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1rem; }
+    .card-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--gray-light);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.5rem;
+    }
+
+    /* Rating */
+    .card-rating {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .stars { color: var(--accent); font-size: 0.8rem; letter-spacing: 1px; }
+    .rating-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem; font-weight: 700; color: var(--white);
+    }
+    .rating-count {
+      font-size: 0.75rem; color: var(--gray);
+    }
+
+    /* Card footer */
+    .card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 1rem; border-top: 1px solid var(--border);
+      gap: 0.75rem;
+    }
+    .card-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem; letter-spacing: 1px; color: var(--white); line-height: 1;
+    }
+    .card-price-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gray); margin-top: 0.2rem;
+    }
+
+    .add-to-cart-btn {
+      display: flex; align-items: center; gap: 0.4rem;
+      background: var(--red); border: 2px solid var(--red);
+      color: var(--white); padding: 0.6rem 1rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s; white-space: nowrap; flex-shrink: 0;
+    }
+    .add-to-cart-btn:hover { background: transparent; color: var(--red); }
+    .add-to-cart-btn.in-cart {
+      background: transparent; border-color: var(--green); color: var(--green);
+    }
+    .add-to-cart-btn.in-cart:hover { background: rgba(34,197,94,0.1); }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      grid-column: 1 / -1; text-align: center; padding: 5rem 2rem;
+      display: none;
+    }
+    .empty-state.show { display: block; }
+    .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .empty-state h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: 2px; margin-bottom: 0.5rem;
+    }
+    .empty-state p { color: var(--gray); }
+
+    /* ── CART PANEL ── */
+    .cart-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(6px); z-index: 3000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: all; }
+
+    .cart-panel {
+      position: fixed; top: 0; right: 0; bottom: 0;
+      width: min(420px, 100vw);
+      background: var(--dark); border-left: 1px solid var(--border);
+      z-index: 3001;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      display: flex; flex-direction: column;
+    }
+    .cart-overlay.open .cart-panel { transform: translateX(0); }
+
+    .cart-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 1.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 3px;
+    }
+    .cart-title span { color: var(--red); }
+    .cart-close-btn {
+      background: none; border: 1px solid var(--border);
+      color: var(--gray); width: 32px; height: 32px;
+      font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .cart-close-btn:hover { border-color: var(--red); color: var(--red); }
+
+    .cart-items { flex: 1; overflow-y: auto; padding: 1.25rem 1.75rem; }
+
+    .cart-empty {
+      text-align: center; padding: 4rem 1rem;
+      display: none;
+    }
+    .cart-empty.show { display: block; }
+    .cart-empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+    .cart-empty p {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray);
+    }
+
+    .cart-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 0; border-bottom: 1px solid var(--border);
+      animation: slideIn 0.3s ease;
+    }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+    .cart-item-icon {
+      width: 52px; height: 52px; flex-shrink: 0;
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem;
+    }
+    .cart-item-info { flex: 1; min-width: 0; }
+    .cart-item-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.95rem; font-weight: 700; letter-spacing: 1px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .cart-item-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem; color: var(--red); margin-top: 0.15rem;
+    }
+
+    .cart-item-controls { display: flex; align-items: center; gap: 0.4rem; }
+    .qty-btn {
+      width: 28px; height: 28px; background: var(--card); border: 1px solid var(--border);
+      color: var(--white); font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s; flex-shrink: 0;
+    }
+    .qty-btn:hover { border-color: var(--red); }
+    .qty-num {
+      width: 28px; text-align: center;
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem;
+    }
+    .cart-item-remove {
+      background: none; border: none; color: var(--gray);
+      cursor: pointer; font-size: 1rem; padding: 0.25rem;
+      transition: color 0.2s; line-height: 1;
+    }
+    .cart-item-remove:hover { color: var(--red); }
+
+    /* Cart Footer */
+    .cart-footer { padding: 1.25rem 1.75rem; border-top: 1px solid var(--border); }
+    .cart-summary { margin-bottom: 1.25rem; }
+    .cart-row {
+      display: flex; justify-content: space-between;
+      font-size: 0.9rem; color: var(--gray);
+      padding: 0.3rem 0;
+    }
+    .cart-row.total {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem; letter-spacing: 2px; color: var(--white);
+      border-top: 1px solid var(--border); margin-top: 0.5rem; padding-top: 0.75rem;
+    }
+    .cart-row.total span:last-child { color: var(--red); }
+    .checkout-btn {
+      width: 100%; padding: 1rem; background: var(--red); border: 2px solid var(--red);
+      color: var(--white); font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; cursor: pointer; transition: all 0.3s;
+    }
+    .checkout-btn:hover { background: transparent; color: var(--red); }
+    .clear-cart-btn {
+      width: 100%; margin-top: 0.75rem; padding: 0.6rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--gray); font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer; transition: all 0.2s;
+    }
+    .clear-cart-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── FAVORITES SECTION ── */
+    .fav-section {
+      background: var(--dark);
+      padding: 4rem 2.5rem 5rem;
+      border-top: 1px solid var(--border);
+    }
+    .fav-section-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2.5rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem); letter-spacing: 2px; line-height: 1;
+    }
+    .section-title em { font-style: normal; color: var(--red); }
+
+    .fav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .fav-empty {
+      grid-column: 1 / -1;
+      padding: 3rem; text-align: center;
+      border: 1px dashed var(--border); color: var(--gray);
+    }
+    .fav-empty-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .fav-empty p {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    /* Mini card for favorites */
+    .fav-card {
+      background: var(--card); border: 1px solid var(--border);
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.875rem 1rem;
+      transition: border-color 0.3s;
+      animation: fadeUp 0.4s ease;
+    }
+    .fav-card:hover { border-color: rgba(230,60,47,0.4); }
+    .fav-card-icon {
+      font-size: 1.75rem; width: 44px; height: 44px;
+      background: var(--dark); display: flex;
+      align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .fav-card-body { flex: 1; min-width: 0; }
+    .fav-card-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem; font-weight: 700; letter-spacing: 1px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .fav-card-price { font-size: 0.8rem; color: var(--red); margin-top: 0.15rem; }
+    .fav-remove {
+      background: none; border: none; color: var(--gray);
+      cursor: pointer; font-size: 0.9rem; padding: 0.25rem;
+      transition: color 0.2s;
+    }
+    .fav-remove:hover { color: var(--red); }
+
+    /* ── TOAST ── */
+    .toast-container {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      z-index: 5000; display: flex; flex-direction: column;
+      align-items: center; gap: 0.5rem; pointer-events: none;
+    }
+    .toast {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--white); padding: 0.75rem 1.5rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase;
+      display: flex; align-items: center; gap: 0.75rem;
+      opacity: 0; transform: translateY(20px);
+      transition: all 0.3s; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.fav-toast { border-color: var(--red); }
+    .toast.cart-toast { border-color: var(--green); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      padding: 4rem 2.5rem 2rem;
+      border-top: 1px solid var(--border);
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 3rem;
+    }
+    .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; margin-bottom: 1rem; }
+    .footer-logo span { color: var(--red); }
+    .footer-about { font-size: 0.9rem; color: var(--gray); line-height: 1.8; max-width: 280px; }
+    .footer-col-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--red); margin-bottom: 1.25rem;
+    }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 0.6rem; }
+    .footer-links a { color: var(--gray); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      border-top: 1px solid var(--border); padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy { font-size: 0.8rem; color: var(--gray); }
+    .footer-copy span { color: var(--red); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      70% { transform: scale(1.05); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .navbar { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .mobile-menu { display: block; }
+      .page-hero { padding: 7rem 1.5rem 3rem; }
+      .shop-section, .fav-section { padding: 4rem 1.5rem; }
+      .shop-toolbar { flex-direction: column; align-items: flex-start; }
+      .shop-toolbar-right { width: 100%; }
+      .search-box { flex: 1; }
+      .search-box input { width: 100%; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .product-grid { grid-template-columns: 1fr; }
+      .fav-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar" id="navbar">
+    <a href="index.html" class="nav-logo">IRON<span>PEAK</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Anasayfa</a></li>
+      <li><a href="index.html#hareketler">Hareketler</a></li>
+      <li><a href="magaza.html" class="active">Mağaza</a></li>
+      <li><a href="pages/about.html">Hakkımızda</a></li>
+      <li><a href="pages/contact.html">İletişim</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <button class="nav-cart-btn" id="navCartBtn" aria-label="Sepeti Aç">
+        🛒 Sepet
+        <span class="nav-cart-count" id="navCartCount">0</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menü">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="index.html">Anasayfa</a></li>
+      <li><a href="index.html#hareketler">Hareketler</a></li>
+      <li><a href="magaza.html">Mağaza</a></li>
+      <li><a href="pages/about.html">Hakkımızda</a></li>
+      <li><a href="pages/contact.html">İletişim</a></li>
+    </ul>
+  </div>
+
+  <!-- ── PAGE HERO ── -->
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-content">
+      <p class="section-label">Supplement</p>
+      <h1>IRONPEAK<br><em>MAĞAZA</em></h1>
+    </div>
+  </div>
+
+  <!-- ── SHOP ── -->
+  <section class="shop-section" id="shop">
+    <div class="shop-toolbar">
+      <div class="shop-toolbar-left">
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-btn active" data-filter="all">Tümü</button>
+          <button class="filter-btn" data-filter="protein">Protein</button>
+          <button class="filter-btn" data-filter="kreatin">Kreatin</button>
+          <button class="filter-btn" data-filter="pre-workout">Pre-Workout</button>
+          <button class="filter-btn" data-filter="aminoasit">Aminoasit</button>
+          <button class="filter-btn" data-filter="vitamin">Vitamin</button>
+          <button class="filter-btn" data-filter="eklem">Eklem</button>
+        </div>
+      </div>
+      <div class="shop-toolbar-right">
+        <div class="search-box">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Ürün ara...">
+        </div>
+        <select class="sort-select" id="sortSelect">
+          <option value="default">Sıralama</option>
+          <option value="price-asc">Fiyat: Düşük → Yüksek</option>
+          <option value="price-desc">Fiyat: Yüksek → Düşük</option>
+          <option value="rating">En Yüksek Puan</option>
+          <option value="reviews">En Çok Değerlendirilen</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="results-info" id="resultsInfo">
+      <span id="resultsCount">0</span> ürün listeleniyor
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      <!-- Cards injected by JS -->
+      <div class="empty-state" id="emptyState">
+        <div class="empty-state-icon">🔍</div>
+        <h3>Ürün Bulunamadı</h3>
+        <p style="color:var(--gray);">Farklı bir arama terimi dene veya filtreleri sıfırla.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FAVORITES ── -->
+  <section class="fav-section" id="favSection">
+    <div class="fav-section-head">
+      <div>
+        <p class="section-label">Listelerim</p>
+        <h2 class="section-title">FAVORİ<br><em>ÜRÜNLERİM</em></h2>
+      </div>
+    </div>
+    <div class="fav-grid" id="favGrid">
+      <div class="fav-empty" id="favEmpty">
+        <div class="fav-empty-icon">🤍</div>
+        <p>Henüz favori eklemedin</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">IRON<span>PEAK</span></div>
+        <p class="footer-about">Bilimsel antrenman prensipleriyle güçlen. Doğru takviye, doğru antrenman, doğru sonuç.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Sayfalar</div>
+        <ul class="footer-links">
+          <li><a href="index.html">Anasayfa</a></li>
+          <li><a href="magaza.html">Mağaza</a></li>
+          <li><a href="pages/about.html">Hakkımızda</a></li>
+          <li><a href="pages/contact.html">İletişim</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Kategoriler</div>
+        <ul class="footer-links">
+          <li><a href="#">Protein</a></li>
+          <li><a href="#">Kreatin</a></li>
+          <li><a href="#">Vitamin</a></li>
+          <li><a href="#">Pre-Workout</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 <span>IRONPEAK</span> GYM</p>
+      <p class="footer-copy" style="color:#444;">Eğitim Amaçlı Proje</p>
+    </div>
+  </footer>
+
+  <!-- ── CART PANEL ── -->
+  <div class="cart-overlay" id="cartOverlay">
+    <div class="cart-panel" id="cartPanel">
+      <div class="cart-header">
+        <div class="cart-title">SEPETİM <span id="cartItemCount">(0)</span></div>
+        <button class="cart-close-btn" id="cartCloseBtn">✕</button>
+      </div>
+      <div class="cart-items" id="cartItems">
+        <div class="cart-empty show" id="cartEmpty">
+          <div class="cart-empty-icon">🛒</div>
+          <p>Sepetiniz boş</p>
+        </div>
+      </div>
+      <div class="cart-footer" id="cartFooter" style="display:none;">
+        <div class="cart-summary" id="cartSummary"></div>
+        <button class="checkout-btn" id="checkoutBtn">SİPARİŞİ TAMAMLA →</button>
+        <button class="clear-cart-btn" id="clearCartBtn">Sepeti Temizle</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TOAST ── -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+  /* ═══════════════════════════════════════════════
+     IRONPEAK — magaza.js (inline)
+     JSON veri okuma + Kart render + Favoriler + Sepet + localStorage
+  ═══════════════════════════════════════════════ */
+
+  /* ── State ── */
+  let allProducts = [];
+  let filteredProducts = [];
+  let activeFilter = 'all';
+  let searchQuery = '';
+  let sortMode = 'default';
+
+  /* ── localStorage helpers ── */
+  const LS_FAV  = 'ironpeak_favorites';
+  const LS_CART = 'ironpeak_cart';
+
+  function getFavorites() {
+    try { return JSON.parse(localStorage.getItem(LS_FAV)) || []; }
+    catch { return []; }
+  }
+  function setFavorites(arr) {
+    localStorage.setItem(LS_FAV, JSON.stringify(arr));
+  }
+  function getCart() {
+    try { return JSON.parse(localStorage.getItem(LS_CART)) || []; }
+    catch { return []; }
+  }
+  function setCart(arr) {
+    localStorage.setItem(LS_CART, JSON.stringify(arr));
+  }
+
+  /* ── Toast ── */
+  function showToast(msg, type = 'fav') {
+    const container = document.getElementById('toastContainer');
+    const t = document.createElement('div');
+    t.className = `toast ${type}-toast`;
+    t.textContent = msg;
+    container.appendChild(t);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => t.classList.add('show'));
+    });
+    setTimeout(() => {
+      t.classList.remove('show');
+      setTimeout(() => t.remove(), 350);
+    }, 2200);
+  }
+
+  /* ── Stars render ── */
+  function renderStars(rating) {
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5;
+    let s = '';
+    for (let i = 0; i < 5; i++) {
+      if (i < full) s += '★';
+      else if (i === full && half) s += '☆';
+      else s += '☆';
+    }
+    return s;
+  }
+
+  /* ── Badge color helper ── */
+  function badgeClass(badge) {
+    if (!badge) return '';
+    if (badge === 'Premium') return 'premium';
+    if (badge === 'Yeni') return 'new';
+    if (badge === 'Sınırlı Stok') return 'stock';
+    return '';
+  }
+
+  /* ── Render a single product card ── */
+  function renderCard(product) {
+    const favs  = getFavorites();
+    const cart  = getCart();
+    const isFav  = favs.includes(product.id);
+    const inCart = cart.some(i => i.id === product.id);
+
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.dataset.id = product.id;
+    card.dataset.category = product.category;
+
+    card.innerHTML = `
+      ${product.badge ? `<div class="card-badge ${badgeClass(product.badge)}">${product.badge}</div>` : ''}
+      <button class="fav-btn ${isFav ? 'active' : ''}" data-id="${product.id}" title="Favorilere Ekle" aria-label="Favorilere Ekle">
+        ${isFav ? '♥' : '♡'}
+      </button>
+      <div class="card-icon-area">${product.icon}</div>
+      <div class="card-body">
+        <div class="card-category">${product.category}</div>
+        <div class="card-name">${product.name}</div>
+        <div class="card-desc">${product.desc}</div>
+        <div class="card-tags">
+          ${product.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+        </div>
+        <div class="card-rating">
+          <div class="stars">${renderStars(product.rating)}</div>
+          <span class="rating-num">${product.rating}</span>
+          <span class="rating-count">(${product.reviews.toLocaleString('tr')} yorum)</span>
+        </div>
+        <div class="card-footer">
+          <div>
+            <div class="card-price">₺${product.price.toLocaleString('tr')}</div>
+            <div class="card-price-sub">${product.servings} Servis</div>
+          </div>
+          <button class="add-to-cart-btn ${inCart ? 'in-cart' : ''}" data-id="${product.id}">
+            ${inCart ? '✓ Sepette' : '+ Sepet'}
+          </button>
+        </div>
+      </div>
+    `;
+
+    /* Fav button */
+    card.querySelector('.fav-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFavorite(product.id);
+    });
+
+    /* Cart button */
+    card.querySelector('.add-to-cart-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleCart(product.id);
+    });
+
+    return card;
+  }
+
+  /* ── Render all products (filtered & sorted) ── */
+  function renderProducts() {
+    const grid = document.getElementById('productGrid');
+    const emptyState = document.getElementById('emptyState');
+
+    // Remove existing cards (keep emptyState)
+    grid.querySelectorAll('.product-card').forEach(c => c.remove());
+
+    // Filter
+    let list = allProducts.filter(p => {
+      const matchFilter = activeFilter === 'all' || p.category === activeFilter;
+      const matchSearch = p.name.toLowerCase().includes(searchQuery) ||
+                          p.desc.toLowerCase().includes(searchQuery) ||
+                          p.tags.some(t => t.toLowerCase().includes(searchQuery));
+      return matchFilter && matchSearch;
+    });
+
+    // Sort
+    if (sortMode === 'price-asc')  list.sort((a, b) => a.price - b.price);
+    if (sortMode === 'price-desc') list.sort((a, b) => b.price - a.price);
+    if (sortMode === 'rating')     list.sort((a, b) => b.rating - a.rating);
+    if (sortMode === 'reviews')    list.sort((a, b) => b.reviews - a.reviews);
+
+    filteredProducts = list;
+
+    // Update results count
+    document.getElementById('resultsCount').textContent = list.length;
+
+    if (list.length === 0) {
+      emptyState.classList.add('show');
+    } else {
+      emptyState.classList.remove('show');
+      list.forEach((p, i) => {
+        const card = renderCard(p);
+        card.style.animation = `fadeUp 0.4s ease ${i * 0.04}s both`;
+        grid.appendChild(card);
+      });
+    }
+  }
+
+  /* ── Toggle Favorite ── */
+  function toggleFavorite(id) {
+    let favs = getFavorites();
+    const idx = favs.indexOf(id);
+    if (idx === -1) {
+      favs.push(id);
+      showToast('❤ Favorilere eklendi', 'fav');
+    } else {
+      favs.splice(idx, 1);
+      showToast('♡ Favorilerden çıkarıldı', 'fav');
+    }
+    setFavorites(favs);
+    updateFavBtns(id, favs.includes(id));
+    renderFavorites();
+  }
+
+  function updateFavBtns(id, isFav) {
+    document.querySelectorAll(`.fav-btn[data-id="${id}"]`).forEach(btn => {
+      btn.classList.toggle('active', isFav);
+      btn.textContent = isFav ? '♥' : '♡';
+    });
+  }
+
+  /* ── Toggle Cart ── */
+  function toggleCart(id) {
+    let cart = getCart();
+    const idx = cart.findIndex(i => i.id === id);
+    if (idx === -1) {
+      const product = allProducts.find(p => p.id === id);
+      cart.push({ id, qty: 1, price: product.price, name: product.name, icon: product.icon });
+      showToast('🛒 Sepete eklendi', 'cart');
+    } else {
+      cart.splice(idx, 1);
+      showToast('✕ Sepetten çıkarıldı', 'cart');
+    }
+    setCart(cart);
+    updateCartBtns(id);
+    updateCartUI();
+  }
+
+  function updateCartBtns(id) {
+    const cart = getCart();
+    const inCart = cart.some(i => i.id === id);
+    document.querySelectorAll(`.add-to-cart-btn[data-id="${id}"]`).forEach(btn => {
+      btn.classList.toggle('in-cart', inCart);
+      btn.textContent = inCart ? '✓ Sepette' : '+ Sepet';
+    });
+  }
+
+  /* ── Update quantity ── */
+  function changeQty(id, delta) {
+    let cart = getCart();
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    item.qty += delta;
+    if (item.qty <= 0) {
+      cart = cart.filter(i => i.id !== id);
+      updateCartBtns(id);
+    }
+    setCart(cart);
+    updateCartUI();
+  }
+
+  /* ── Remove cart item ── */
+  function removeCartItem(id) {
+    let cart = getCart().filter(i => i.id !== id);
+    setCart(cart);
+    updateCartBtns(id);
+    updateCartUI();
+  }
+
+  /* ── Update cart UI ── */
+  function updateCartUI() {
+    const cart = getCart();
+    const totalItems = cart.reduce((s, i) => s + i.qty, 0);
+    const totalPrice = cart.reduce((s, i) => s + i.qty * i.price, 0);
+
+    // Nav badge
+    const countBadge = document.getElementById('navCartCount');
+    countBadge.textContent = totalItems;
+    countBadge.classList.toggle('visible', totalItems > 0);
+
+    // Panel count
+    document.getElementById('cartItemCount').textContent = `(${totalItems})`;
+
+    // Empty / Footer
+    const cartEmpty   = document.getElementById('cartEmpty');
+    const cartFooter  = document.getElementById('cartFooter');
+    const cartItemsEl = document.getElementById('cartItems');
+
+    // Remove old items (keep empty notice)
+    cartItemsEl.querySelectorAll('.cart-item').forEach(el => el.remove());
+
+    if (cart.length === 0) {
+      cartEmpty.classList.add('show');
+      cartFooter.style.display = 'none';
+    } else {
+      cartEmpty.classList.remove('show');
+      cartFooter.style.display = 'block';
+
+      cart.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'cart-item';
+        el.innerHTML = `
+          <div class="cart-item-icon">${item.icon}</div>
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">₺${(item.price * item.qty).toLocaleString('tr')}</div>
+          </div>
+          <div class="cart-item-controls">
+            <button class="qty-btn" data-id="${item.id}" data-delta="-1">−</button>
+            <span class="qty-num">${item.qty}</span>
+            <button class="qty-btn" data-id="${item.id}" data-delta="1">+</button>
+          </div>
+          <button class="cart-item-remove" data-id="${item.id}" title="Kaldır">✕</button>
+        `;
+        el.querySelectorAll('.qty-btn').forEach(btn => {
+          btn.addEventListener('click', () => changeQty(btn.dataset.id, parseInt(btn.dataset.delta)));
+        });
+        el.querySelector('.cart-item-remove').addEventListener('click', () => removeCartItem(item.id));
+        cartItemsEl.appendChild(el);
+      });
+
+      // Summary
+      const shipping = totalPrice >= 500 ? 0 : 49;
+      document.getElementById('cartSummary').innerHTML = `
+        <div class="cart-row"><span>Ara Toplam</span><span>₺${totalPrice.toLocaleString('tr')}</span></div>
+        <div class="cart-row"><span>Kargo</span><span>${shipping === 0 ? '<span style="color:var(--green)">Ücretsiz</span>' : '₺' + shipping}</span></div>
+        <div class="cart-row total"><span>TOPLAM</span><span>₺${(totalPrice + shipping).toLocaleString('tr')}</span></div>
+      `;
+    }
+  }
+
+  /* ── Open / Close cart panel ── */
+  function openCart() {
+    document.getElementById('cartOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeCart() {
+    document.getElementById('cartOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Render Favorites ── */
+  function renderFavorites() {
+    const favs = getFavorites();
+    const grid = document.getElementById('favGrid');
+    const emptyEl = document.getElementById('favEmpty');
+
+    grid.querySelectorAll('.fav-card').forEach(c => c.remove());
+
+    if (favs.length === 0) {
+      emptyEl.style.display = 'block';
+      return;
+    }
+    emptyEl.style.display = 'none';
+
+    favs.forEach((id, i) => {
+      const product = allProducts.find(p => p.id === id);
+      if (!product) return;
+
+      const el = document.createElement('div');
+      el.className = 'fav-card';
+      el.style.animationDelay = `${i * 0.06}s`;
+      el.innerHTML = `
+        <div class="fav-card-icon">${product.icon}</div>
+        <div class="fav-card-body">
+          <div class="fav-card-name">${product.name}</div>
+          <div class="fav-card-price">₺${product.price.toLocaleString('tr')}</div>
+        </div>
+        <button class="fav-remove" data-id="${product.id}" title="Favorilerden Çıkar">✕</button>
+      `;
+      el.querySelector('.fav-remove').addEventListener('click', () => toggleFavorite(product.id));
+      grid.appendChild(el);
+    });
+  }
+
+  /* ── Load JSON & Init ── */
+  async function loadProducts() {
+    try {
+      // Try fetching the JSON file
+      const res = await fetch('supplements.json');
+      if (!res.ok) throw new Error('fetch failed');
+      allProducts = await res.json();
+    } catch {
+      // Inline fallback data (identical to supplements.json) for environments
+      // where fetch to same-dir is blocked (e.g., file:// protocol)
+      allProducts = [
+        { id:"whey-gold", name:"Whey Protein Gold", brand:"IRONPEAK", category:"protein", price:849, rating:4.8, reviews:312, badge:"Çok Satan", icon:"🥛", desc:"Ultra filtre whey protein. Servis başına 25g protein, 5.5g BCAA, düşük laktoz.", tags:["25g Protein","Düşük Şeker","Gluten-Free"], flavors:["Çikolata","Vanilya","Çilek"], servings:30 },
+        { id:"creatine-mono", name:"Creatine Monohydrate", brand:"IRONPEAK", category:"kreatin", price:399, rating:4.9, reviews:528, badge:"En Çok Değerlendirilen", icon:"⚡", desc:"Mikronize kreatin monohidrat. Güç, patlayıcı performans ve kas hacmi için.", tags:["5g Servis","Saf Formül","Tatlandırıcı Yok"], flavors:["Doğal"], servings:60 },
+        { id:"pre-workout-fury", name:"Pre-Workout Fury", brand:"IRONPEAK", category:"pre-workout", price:649, rating:4.7, reviews:189, badge:"Yeni", icon:"🔥", desc:"Kafein, beta-alanin, citrulline malate içeren güçlü pre-workout formülü.", tags:["200mg Kafein","8g Citrulline","Beta-Alanin"], flavors:["Karpuz","Kavun","Limon-Nane"], servings:30 },
+        { id:"bcaa-complex", name:"BCAA 2:1:1 Complex", brand:"IRONPEAK", category:"aminoasit", price:479, rating:4.6, reviews:241, badge:null, icon:"💊", desc:"2:1:1 oranlı lösin, izolösin, valin kompleksi. Toparlanmayı hızlandırır.", tags:["7g Servis","İdeal Oran","Fermente"], flavors:["Limon","Mango","Üzüm"], servings:40 },
+        { id:"mass-gainer", name:"Mass Gainer 3000", brand:"IRONPEAK", category:"protein", price:1099, rating:4.5, reviews:156, badge:"Sınırlı Stok", icon:"🏋️", desc:"Servis başına 1250 kalori, 52g protein, 250g kompleks karbonhidrat.", tags:["1250 Kcal","52g Protein","Oat & Quinoa"], flavors:["Çikolata","Muz"], servings:14 },
+        { id:"omega3-fish", name:"Omega-3 Fish Oil", brand:"IRONPEAK", category:"vitamin", price:299, rating:4.7, reviews:387, badge:null, icon:"🐟", desc:"Yüksek konsantrasyonlu EPA/DHA. Eklem, kalp ve inflamasyon kontrolü.", tags:["1200mg EPA/DHA","Moleküler Destile","Koku Yok"], flavors:["Kapsül"], servings:90 },
+        { id:"vitamin-d3k2", name:"Vitamin D3 + K2", brand:"IRONPEAK", category:"vitamin", price:249, rating:4.8, reviews:203, badge:"Önerilen", icon:"☀️", desc:"5000 IU D3 ve 100mcg K2. Kemik yoğunluğu ve bağışıklık için kritik.", tags:["5000 IU D3","100mcg K2","Kolay Yutulur"], flavors:["Kapsül"], servings:90 },
+        { id:"zma-complex", name:"ZMA Night Formula", brand:"IRONPEAK", category:"vitamin", price:329, rating:4.5, reviews:142, badge:null, icon:"🌙", desc:"Çinko, Magnezyum ve B6 vitamini. Uyku kalitesi ve toparlanma için.", tags:["ZMA Formül","Uyku Desteği","Doğal"], flavors:["Kapsül"], servings:90 },
+        { id:"glutamine-pure", name:"L-Glutamine Pure", brand:"IRONPEAK", category:"aminoasit", price:359, rating:4.6, reviews:178, badge:null, icon:"🔬", desc:"Fermente L-Glutamin. Bağırsak sağlığı ve yoğun antrenman toparlanması.", tags:["5g Servis","Fermente","Tatlandırıcı Yok"], flavors:["Doğal"], servings:60 },
+        { id:"collagen-sport", name:"Collagen Sport Plus", brand:"IRONPEAK", category:"eklem", price:549, rating:4.4, reviews:98, badge:"Yeni", icon:"🦴", desc:"Tip I ve Tip III hidrolize kollajen + C Vitamini. Eklem sağlığı için.", tags:["10g Kollajen","Vit. C","Hyaluronik Asit"], flavors:["Portakal","Karpuz"], servings:30 },
+        { id:"iso-zero", name:"ISO Zero Whey", brand:"IRONPEAK", category:"protein", price:999, rating:4.9, reviews:267, badge:"Premium", icon:"🥇", desc:"Sıfır yağ, sıfır laktoz. Servis başına 28g saf izolat protein.", tags:["28g İzolat","0g Yağ","Laktoz-Free"], flavors:["Çikolata","Vanilya","Kahve"], servings:28 },
+        { id:"electrolyte-pro", name:"Electrolyte Pro", brand:"IRONPEAK", category:"pre-workout", price:279, rating:4.6, reviews:134, badge:null, icon:"💧", desc:"5 elektrolit karışımı. Yoğun antrenman sırasında hidrasyon için.", tags:["5 Elektrolit","Şekersiz","Hızlı Çözünür"], flavors:["Limon-Lime","Portakal","Berry"], servings:50 }
+      ];
+    }
+
+    renderProducts();
+    renderFavorites();
+    updateCartUI();
+  }
+
+  /* ── Event Listeners ── */
+  document.addEventListener('DOMContentLoaded', () => {
+
+    /* Scroll progress */
+    const progressBar = document.getElementById('scrollProgress');
+    window.addEventListener('scroll', () => {
+      const total = document.body.scrollHeight - window.innerHeight;
+      progressBar.style.width = (window.scrollY / total * 100) + '%';
+    });
+
+    /* Navbar scroll */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    /* Hamburger */
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    /* Filters */
+    document.getElementById('filterTabs').addEventListener('click', (e) => {
+      if (!e.target.classList.contains('filter-btn')) return;
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      activeFilter = e.target.dataset.filter;
+      renderProducts();
+    });
+
+    /* Search */
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      renderProducts();
+    });
+
+    /* Sort */
+    document.getElementById('sortSelect').addEventListener('change', (e) => {
+      sortMode = e.target.value;
+      renderProducts();
+    });
+
+    /* Cart open/close */
+    document.getElementById('navCartBtn').addEventListener('click', openCart);
+    document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
+    document.getElementById('cartOverlay').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('cartOverlay')) closeCart();
+    });
+
+    /* Checkout simulation */
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+      showToast('✓ Sipariş alındı! Teşekkürler.', 'cart');
+      setCart([]);
+      updateCartUI();
+      setTimeout(closeCart, 800);
+    });
+
+    /* Clear cart */
+    document.getElementById('clearCartBtn').addEventListener('click', () => {
+      setCart([]);
+      updateCartUI();
+      // Update all cart buttons
+      allProducts.forEach(p => updateCartBtns(p.id));
+    });
+
+    /* Load data */
+    loadProducts();
+  });
+  </script>
+</body>
+</html>
