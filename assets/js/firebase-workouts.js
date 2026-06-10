@@ -12,7 +12,6 @@ import {
   deleteDoc,
   query,
   where,
-  orderBy,
   serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -33,19 +32,29 @@ export async function addWorkout(workoutData) {
   return docRef.id;
 }
 
-// Kullanıcının tüm antrenmanlarını getir (tarihe göre sıralı)
+// Kullanıcının tüm antrenmanlarını getir
+// orderBy kaldırıldı → bileşik index gerekmez; sıralama JS tarafında yapılır
 export async function getMyWorkouts() {
   const user = auth.currentUser;
   if (!user) throw new Error("Antrenmanları görmek için giriş yapmalısınız.");
 
   const q = query(
     collection(db, "workouts"),
-    where("userId", "==", user.uid),
-    orderBy("createdAt", "desc")
+    where("userId", "==", user.uid)
+    // NOT: orderBy("createdAt") burada YOK — composite index gerekmez
   );
 
   const snapshot = await getDocs(q);
-  return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+  const docs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+
+  // Tarihe göre azalan sıra (en yeni başta) — JS tarafında sırala
+  docs.sort((a, b) => {
+    const ta = a.createdAt?.toMillis?.() ?? 0;
+    const tb = b.createdAt?.toMillis?.() ?? 0;
+    return tb - ta;
+  });
+
+  return docs;
 }
 
 // Antrenman güncelle
